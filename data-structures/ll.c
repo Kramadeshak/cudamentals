@@ -17,20 +17,13 @@ node *create_node(int value){
 	return n;
 }
 
-void init_ll(node **head, int value) {
-	(*head) = malloc(sizeof(node));
-	node *h = (*head);
-	h->next = NULL;
-	h->data = value;
-}
 
 void add_value_ll(node *head, int value) {
 	node *h = head;
 	while (h->next!=NULL){
 		h=h->next;
 	}
-	h->next = malloc(sizeof(node));
-	h->next->data=value;
+	h->next = create_node(value);
 }
 
 void print_ll(node *h) {
