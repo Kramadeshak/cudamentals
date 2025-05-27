@@ -25,11 +25,15 @@ void add_value_ll(node *head, int value) {
 	h->next = create_node(value);
 }
 
-void print_ll(node *h) {
-	while (h != NULL) {
-		printf("Value: %d\n", h->data);
-		h = h->next;
+void for_each(const node *head, void (*func)(int)) {
+	while (head) {
+		func(head->data);
+		head = head->next;
 	}
+}
+
+void print_val(int data) {
+	printf("Value: %d\n", data);
 }
 
 void free_ll(node *head){
@@ -49,7 +53,6 @@ int main(){
 	add_value_ll(head, 3);
 	add_value_ll(head, 4);
 	add_value_ll(head, 5);
-	print_ll(head);
+	for_each(head, print_val);
 	free_ll(head);
-	/*print_ll(head);*/
 }
