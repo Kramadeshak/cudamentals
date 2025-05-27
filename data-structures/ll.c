@@ -17,7 +17,6 @@ node *create_node(int value){
 	return n;
 }
 
-
 void add_value_ll(node *head, int value) {
 	node *h = head;
 	while (h->next!=NULL){
@@ -33,6 +32,15 @@ void print_ll(node *h) {
 	}
 }
 
+void free_ll(node *head){
+	node *tmp;
+	while (head){
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
+}
+
 int main(){
 	printf("Size of the struct: %ld\n", sizeof(node));
 	node *head;
@@ -42,4 +50,6 @@ int main(){
 	add_value_ll(head, 4);
 	add_value_ll(head, 5);
 	print_ll(head);
+	free_ll(head);
+	/*print_ll(head);*/
 }
