@@ -32,6 +32,18 @@ void for_each(const node *head, void (*func)(int)) {
 	}
 }
 
+void delete_node(node *head, int val) {
+	while (head->next) {
+		if (head->next->data == val) {
+			node *tmp = head->next;
+			head->next = head->next->next;
+			free(tmp);
+			return;
+		}
+		head = head->next;
+	}
+}
+
 void print_val(int data) {
 	printf("Value: %d\n", data);
 }
@@ -53,6 +65,8 @@ int main(){
 	add_value_ll(head, 3);
 	add_value_ll(head, 4);
 	add_value_ll(head, 5);
+	for_each(head, print_val);
+	delete_node(head, 3);
 	for_each(head, print_val);
 	free_ll(head);
 }
