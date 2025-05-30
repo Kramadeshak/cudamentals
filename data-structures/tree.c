@@ -21,7 +21,7 @@ tree *create_node(int value){
 
 void add_value(tree *head, int value) {
 	tree *h = head;
-	if (head->data < value) {
+	if (value < head->data) {
 		if (head->left == NULL){
 			head->left = create_node(value);
 			return;
@@ -38,6 +38,36 @@ void add_value(tree *head, int value) {
 	}
 }
 
+void print_tree_inorder(tree *h) {
+	if (h->left != NULL) {
+		print_tree_inorder(h->left);
+	}
+	printf("%d", h->data);
+	if (h->right != NULL) {
+		print_tree_inorder(h->right);
+	}
+}
+
+void print_tree_preorder(tree *h) {
+	printf("%d", h->data);
+	if (h->left != NULL) {
+		print_tree_preorder(h->left);
+	}
+	if (h->right != NULL) {
+		print_tree_preorder(h->right);
+	}
+}
+
+void print_tree_postorder(tree *h) {
+	if (h->left != NULL) {
+		print_tree_postorder(h->left);
+	}
+	if (h->right != NULL) {
+		print_tree_postorder(h->right);
+	}
+	printf("%d", h->data);
+}
+
 int main(){
 	printf("Size of the struct: %ld\n", sizeof(tree));
 	tree *head;
@@ -48,4 +78,10 @@ int main(){
 	add_value(head, 7);
 	add_value(head, 5);
 	add_value(head, 6);
+	print_tree_inorder(head);
+	printf(" - Inorder\n");
+	print_tree_preorder(head);
+	printf(" - pre-order\n");
+	print_tree_postorder(head);
+	printf(" - post-order\n");
 }
