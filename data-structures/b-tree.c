@@ -19,6 +19,19 @@ struct BTreeNode *createNode(int val, struct BTreeNode *child) {
   return newNode;
 }
 
+void insertNode(int val, int pos, struct BTreeNode *node,
+        struct BTreeNode *child) {
+  int j = node->count;
+  while (j > pos) {
+    node->val[j + 1] = node->val[j];
+    node->link[j + 1] = node->link[j];
+    j--;
+  }
+  node->val[j + 1] = val;
+  node->link[j + 1] = child;
+  node->count++;
+}
+
 int main() {
 	printf("Size of the struct: %ld\n", sizeof(BTreeNode));
 }
