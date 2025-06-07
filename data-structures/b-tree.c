@@ -33,6 +33,75 @@ void insertNode(int val, int pos, struct BTreeNode *node, struct BTreeNode *chil
   node->count++;
 }
 
+void splitNode(int val, int *pval, int pos, struct BTreeNode *node,
+         struct BTreeNode *child, struct BTreeNode **newNode) {
+  int median, j;
+
+  if (pos > MIN)
+    median = MIN + 1;
+  else
+    median = MIN;
+
+  *newNode = (struct BTreeNode *)malloc(sizeof(struct BTreeNode));
+  j = median + 1;
+  while (j <= MAX) {
+    (*newNode)->val[j - median] = node->val[j];
+    (*newNode)->link[j - median] = node->link[j];
+    j++;
+  }
+  node->count = median;
+  (*newNode)->count = MAX - median;
+
+  if (pos <= MIN) {
+    insertNode(val, pos, node, child);
+  } else {
+    insertNode(val, pos - median, *newNode, child);
+  }
+  *pval = node->val[node->count];
+  (*newNode)->link[0] = node->link[node->count];
+  node->count--;
+}
+
+int setValue(int val, int *pval,
+           struct BTreeNode *node, struct BTreeNode **child) {
+  int pos;
+  if (!node) {
+    *pval = val;
+    *child = NULL;
+    return 1;
+  }
+
+  if (val < node->val[1]) {
+    pos = 0;
+  } else {
+    for (pos = node->count;
+       (val < node->val[pos] && pos > 1); pos--)
+      ;
+    if (val == node->val[pos]) {
+      printf("Duplicates are not permitted\n");
+      return 0;
+    }
+  }
+  if (setValue(val, pval, node->link[pos], child)) {
+    if (node->count < MAX) {
+      insertNode(*pval, pos, node, *child);
+    } else {
+      splitNode(*pval, pval, pos, node, *child, child);
+      return 1;
+    }
+  }
+  return 0;
+}
+
+
+void insert(int val) {
+  int flag, i;
+  struct BTreeNode *child;
+
+  flag = setValue(val, &i, root, &child);
+  if (flag)
+    root = createNode(i, child);
+}
 void traversal(struct BTreeNode *myNode) {
   int i;
   if (myNode) {
