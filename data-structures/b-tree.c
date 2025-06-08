@@ -113,6 +113,27 @@ void traversal(struct BTreeNode *myNode) {
   }
 }
 
+void search(int val, int *pos, struct BTreeNode *myNode) {
+  if (!myNode) {
+    return;
+  }
+
+  if (val < myNode->val[1]) {
+    *pos = 0;
+  } else {
+    for (*pos = myNode->count;
+       (val < myNode->val[*pos] && *pos > 1); (*pos)--)
+      ;
+    if (val == myNode->val[*pos]) {
+      printf("%d is found", val);
+      return;
+    }
+  }
+  search(val, pos, myNode->link[*pos]);
+
+  return;
+}
+
 int main() {
 	printf("Size of the struct: %ld\n", sizeof(BTreeNode));
   	int val, ch;
@@ -130,4 +151,5 @@ int main() {
   	traversal(root);
 
   	printf("\n");
+	search(11, &ch, root);
 }
