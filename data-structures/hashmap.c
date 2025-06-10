@@ -6,6 +6,7 @@ int main() {
 	// starting a simple implementation first before moving to a complex one
 	int arr[10], temp;
 	// initializing array to 0
+	printf("Size of the hashmap: %ld\n", sizeof(arr));
 	for (int i=0;i<10;i++) {
 		arr[i]=0;
 	}
