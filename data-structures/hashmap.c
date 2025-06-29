@@ -41,19 +41,15 @@ struct ht* ht_create(void) {
     return table;
 }
 
+void ht_destroy(ht* table) {
+	for (size_t i = 0; i < table->capacity; i++) {
+		free((void*)table->entries[i].key);
+	}
+	free(table->entries);
+	free(table);
+}
+
 int main() {
 	printf("Size of the struct: %ld\n", sizeof(struct ht));
 	struct ht *new_ht = ht_create();
-	int temp;
-	while (1) {
-		printf("Please enter a value: ");
-		scanf("%d", &temp);
-		if (temp == 10)
-			break;
-		printf("entered value: %d\n", temp);
-		arr[temp%10] = temp;
-	}
-	for (int i=0;i<10;i++) {
-		printf("Here is the value for %d: %d\n", i, arr[i]);
-	}
 }
