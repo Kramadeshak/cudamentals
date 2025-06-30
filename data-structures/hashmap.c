@@ -49,6 +49,21 @@ void ht_destroy(ht* table) {
 	free(table);
 }
 
+void* ht_get(ht* table, const char* key) {
+	uint64_t hash = hash_key(key);
+	size_t index = (size_t)(hash & (uint64_t)(table->capacity - 1));
+	while (table->entries[index].key != NULL){
+		if(strcmp(key, table->entries[index].key)==0){
+			return table->entries[index].value;
+		}
+		index++;
+		if (index >= table->capacity){
+			index = 0;
+		}
+	}
+	return NULL;
+}
+
 int main() {
 	printf("Size of the struct: %ld\n", sizeof(struct ht));
 	struct ht *new_ht = ht_create();
