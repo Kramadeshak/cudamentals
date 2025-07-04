@@ -92,6 +92,7 @@ static const char* ht_set_entry(ht_entry* entries, size_t capacity,
             index = 0;
         }
     }
+}
 
 int main() {
 	printf("Size of the struct: %ld\n", sizeof(struct ht));
