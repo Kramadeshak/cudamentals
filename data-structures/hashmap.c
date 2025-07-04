@@ -94,6 +94,30 @@ static const char* ht_set_entry(ht_entry* entries, size_t capacity,
     }
 }
 
+static bool ht_expand(ht* table) {
+    size_t new_capacity = table->capacity * 2;
+    if (new_capacity < table->capacity) {
+        return false;
+    }
+    ht_entry* new_entries = calloc(new_capacity, sizeof(ht_entry));
+    if (new_entries == NULL) {
+        return false;
+    }
+
+    for (size_t i = 0; i < table->capacity; i++) {
+        ht_entry entry = table->entries[i];
+        if (entry.key != NULL) {
+            ht_set_entry(new_entries, new_capacity, entry.key,
+                         entry.value, NULL);
+        }
+    }
+
+    free(table->entries);
+    table->entries = new_entries;
+    table->capacity = new_capacity;
+    return true;
+}
+
 int main() {
 	printf("Size of the struct: %ld\n", sizeof(struct ht));
 	struct ht *new_ht = ht_create();
