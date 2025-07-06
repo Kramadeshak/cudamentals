@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
 typedef struct {
     const char* key;
     void* value;
@@ -11,6 +13,13 @@ struct ht {
     size_t capacity;
     size_t length;
 };
+typedef struct {
+    const char* key;
+    void* value;
+
+    ht* _table;
+    size_t _index;
+} hti;
 
 #define INITIAL_CAPACITY 16
 #define FNV_OFFSET 14695981039346656037UL
@@ -23,6 +32,28 @@ static uint64_t hash_key(const char* key){
 		hash *= FNV_PRIME;
 	}
 	return hash;
+}
+
+hti ht_iterator(struct ht* table) {
+    hti it;
+    it._table = table;
+    it._index = 0;
+    return it;
+}
+
+bool ht_next(hti* it) {
+    ht* table = it->_table;
+    while (it->_index < table->capacity) {
+        size_t i = it->_index;
+        it->_index++;
+        if (table->entries[i].key != NULL) {
+            ht_entry entry = table->entries[i];
+            it->key = entry.key;
+            it->value = entry.value;
+            return true;
+        }
+    }
+    return false;
 }
 
 struct ht* ht_create(void) {
@@ -41,7 +72,7 @@ struct ht* ht_create(void) {
     return table;
 }
 
-void ht_destroy(ht* table) {
+void ht_destroy(struct ht* table) {
 	for (size_t i = 0; i < table->capacity; i++) {
 		free((void*)table->entries[i].key);
 	}
@@ -75,7 +106,7 @@ static const char* ht_set_entry(ht_entry* entries, size_t capacity,
     return key;
 }
 
-static bool ht_expand(ht* table) {
+static bool ht_expand(struct ht* table) {
     size_t new_capacity = table->capacity * 2;
     if (new_capacity < table->capacity) {
         return false;
