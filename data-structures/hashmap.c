@@ -187,5 +187,5 @@ int main() {
     }
     printf("%d\n", (int)ht_length(counts));
     ht_destroy(counts);
-    return 0;struct ht *new_ht = ht_create();
+    return 0;
 }
