@@ -9,12 +9,12 @@ int main( void ) {
 	int c;
 	int *dev_c;
 	HANDLE_ERROR( cudaMalloc( (void**)&dev_c, sizeof(int) ) );
-	add<<<1,1>>>( 5, 13, dev_c );
+	add<<<1,1>>>( 29, 89, dev_c );
 	HANDLE_ERROR( cudaMemcpy( &c,
 		dev_c,
 		sizeof(int),
 		cudaMemcpyDeviceToHost ) );
-	printf( "5 + 13 = %d\n", c );
+	printf( "29 + 89 = %d\n", c );
 	cudaFree( dev_c );
 	return 0;
 }
